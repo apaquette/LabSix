@@ -57,10 +57,16 @@
 
 using namespace std ;
 
-//array dimension
-const int DIM=1000;
-const int SIZE=4;
+/*! \file stencil.cpp
+    \brief main file for demonstrating stencil
+*/
 
+//array dimension
+const int DIM=1000; /*! array dimension */
+const int SIZE=4; /*! array dimension */
+
+/*! \fn int calcNeighbours(vector<float> const  &in, int index, vector<float>& out)
+*/
 int calcNeighbours(vector<float> const  &in, int index, vector<float>& out){
   int amount=out.size();
   for(int i=0;i<out.size();++i){//put neighbours of in[i] into out vector
@@ -75,8 +81,9 @@ int calcNeighbours(vector<float> const  &in, int index, vector<float>& out){
   return 1;
 }
 
-void stencil(vector<float> const &in, vector<float> &out,
-	     function <float(vector<float>) > f,int size){
+/*! \fn void stencil(vector<float> const &in, vector<float> &out, function <float(vector<float>) > f,int size)
+*/
+void stencil(vector<float> const &in, vector<float> &out, function <float(vector<float>) > f,int size){
 #pragma openmp parallel for
   for (int i=0; i < in.size(); ++i){
     vector<float> neighbours(size);
@@ -85,9 +92,12 @@ void stencil(vector<float> const &in, vector<float> &out,
   }
 }
 
-
-
-
+/*! \fn float getNewValue(vector<float> currentValues)
+    \brief Returns the new value based on the sum of the currentValues divided by the count of values
+    \param currentValues vector of current float values
+    \return new value
+    
+*/
 float getNewValue(vector<float> currentValues){
   float average=0.0;
   float total=0.0;

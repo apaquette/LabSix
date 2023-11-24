@@ -50,9 +50,9 @@ int main(int argc, char* argv[])
 {
 
 	// Beginning of parallel region
+	//Alex: This runs the following code on the number of threads available for the device (4 in the case of intel i5-7300HQ)
 	#pragma omp parallel
 	{
-
 		printf("Hello World... from thread = %d\n",
 			omp_get_thread_num());
 	}

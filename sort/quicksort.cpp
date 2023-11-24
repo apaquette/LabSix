@@ -55,11 +55,21 @@
 
 using namespace std ;
 
+/*! \file quickstort.cpp
+    \brief main file for demonstrating quicksort in parallel
+*/
 
-const int LENGTH=2000;
+const int LENGTH=2000; /*! Length of the data */
 
-//template <typename T>
-int partition (vector<int>& myArray , int low , int high ){
+/*!
+  \fn int partition (vector<int>& myArray , int low , int high)
+  \brief Find the pivot of a given array
+  \param myArray Reference to vector int array
+  \param low lowest value
+  \param high highest value
+  \return pivot of the array
+*/
+int partition (vector<int>& myArray , int low , int high){
   int pivot=myArray[high];
   int k=high;
   int i=low;
@@ -77,8 +87,15 @@ int partition (vector<int>& myArray , int low , int high ){
   return i-1;
 }
   
-//template<typename T>
-int quicksort(vector<int>& myArray , int low , int high ){
+/*!
+  \fn int quicksort(vector<int>& myArray , int low , int high)
+  \brief Runs the quicksort algorithm in parallel by splitting the array in two and sharing the array between threads
+  \param myArray The array to be sorted
+  \param low lowest value
+  \param high highest value
+  \return return 1 for success (not actually used for anything here)
+*/
+int quicksort(vector<int>& myArray , int low , int high){
   if (low<high){
     int pivot=partition(myArray,low,high);
     //really we should only do this if each partition is above a certain size (1000 elements?)

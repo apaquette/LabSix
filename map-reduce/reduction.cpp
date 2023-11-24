@@ -55,12 +55,18 @@
 #include <omp.h>
 using namespace std ;
 
+/*! \file reduction.cpp
+    \brief main file for demonstrating reduction
+*/
 
 const int LENGTH=2000;
-int NumThreads=1;
+int NumThreads=1; /*! Number of threads to be used */
 
-
-///! Find out how many threads are running!
+/*!
+  \fn int get_num_threads(void)
+  \brief Returns the number of threads that are running
+  \return Nubmer of threads running
+*/
 int get_num_threads(void) {
     int num_threads = 1;
     //must ask in parallel region otherwise 1 is returned
@@ -72,6 +78,12 @@ int get_num_threads(void) {
     return num_threads;
 }
 
+/*!
+  \fn float getSerialSum(vector<int> data)
+  \brief Returns the sum of a vector of integers sequentially
+  \param data Vector of ints to calculate the sum of
+  \return Sum of the data vector
+*/
 float getSerialSum(vector<int> data){
   float sum=0.0;
   for(auto& value:data){
@@ -80,6 +92,12 @@ float getSerialSum(vector<int> data){
   return sum;
 }
 
+/*!
+  \fn float getParallelSum(vector<int> data)
+  \brief Returns the sum of a vector of integers in parallel
+  \param data Vector of ints to calculate the sum of
+  \return Sum of the data vector
+*/
 float getParallelSum(vector<int> data){
   float sum=0.0;
 #pragma omp parallel for reduction(+:sum)
@@ -89,14 +107,19 @@ float getParallelSum(vector<int> data){
   return sum;
 }
 
-
+/*!
+  \fn float getTiledParallelsum(vector<int> data)
+  \brief Returns the sum of a vector in tiled parallel
+  \param data Vector of ints to calculate the sum of
+  \return Sum of the data vector
+*/
 float getTiledParallelsum(vector<int> data){
   float result =0.0;
   NumThreads=get_num_threads();
   float tileResult[NumThreads];
   for(int i=0;i<NumThreads;++i) tileResult[i]=0.0;
   //map step here
-#pragma omp parallel for 
+#pragma omp parallel for
   for (int i=0; i < data.size(); ++i ){
     int tid = omp_get_thread_num();
     tileResult[tid] =tileResult[tid]+data[i];
@@ -109,8 +132,6 @@ float getTiledParallelsum(vector<int> data){
   std::cout <<std::endl;
   return result ;
 }
-
-
 
 int main(void){
   float sum=0.0;

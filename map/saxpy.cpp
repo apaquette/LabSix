@@ -49,6 +49,18 @@
 #include <time.h>       /* time */
 #include <limits>
 
+/*! \file saxpy.cpp
+    \brief main file for demonstrating saxpy in parallel
+*/
+
+/*!
+  \fn void saxpy(unsigned long n, float a,float y[], float x[])
+  \brief Saxby algorithm (z = ax + y) ran in parallel 
+  \param n Number of times the loop will iterate
+  \param a scalar value
+  \param y x value
+  \param x y value
+*/
 void saxpy(unsigned long n, float a,float y[], float x[])
 {
 #pragma omp parallel for

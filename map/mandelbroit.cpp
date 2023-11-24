@@ -51,28 +51,48 @@
 #include <time.h>       /* time */
 #include <limits>
 
+/*! \file madelbroit.cpp
+    \brief main file for demonstrating mandelbroit
+*/
+
 using namespace std ;
 
-const int ROW=1000;
-const int COL=1000;
-const int DEPTH=10;
+const int ROW=1000; /*! Number of rows */
+const int COL=1000; /*! Number of columns */
+const int DEPTH=10; /*! The depth */
 
+/*!
+  \fn int calc(complex<int> c, int depth)
+  \brief Performs a calculation on a complex int based on a depth provided
+  \param c The complex int
+  \param depth The depth
+  \return Returns the result of the calculation
+*/
 int calc(complex<int> c, int depth){
     int count=0;
     complex<int> z=0;
     for(int i=0;i<depth;++i){
-	if (abs(z)>2.0){
-            break;
-	}
-	z=z*z+c;
-	count++;
+      if (abs(z)>2.0){
+        break;
+      }
+      z=z*z+c;
+      count++;
     }
     return count;
 }
 
+/*!
+  \fn void mandel( int p[ROW][COL], int depth)
+  \brief Processes calculation on p array by depth
+  
+  Processes calculation on p array by depth. Uses pragma to collapse two loops into one, and run in parallel.
 
+  \param p 2D array of ints
+  \param depth The depth
+
+*/
 void mandel( int p[ROW][COL], int depth){
-  #pragma omp parallel for collapse(2)	  
+  #pragma omp parallel for collapse(2) //Alex: Collapses the two loops into a single loop, number two indicates how many loops should be collapsed
   for(int i=0;i<ROW;++i){
         for(int k=0;k<COL;++k){
 	  p[i][k]=calc(complex<int>(i,k),depth);
